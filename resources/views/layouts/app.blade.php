@@ -11,8 +11,7 @@
 
     <body>
 
-        
-        @include('commons.navbar')
+            @include('commons.navbar')
 
         <div class="container mx-auto">
             
