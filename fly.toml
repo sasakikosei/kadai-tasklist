@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for nameless-dream-8605 on 2023-05-07T15:16:28Z
+# fly.toml app configuration file generated for purple-moon-1583 on 2023-05-15T10:26:04Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "nameless-dream-8605"
+app = "purple-moon-1583"
 primary_region = "nrt"
 
 [build]
@@ -13,17 +13,18 @@ primary_region = "nrt"
 
 [env]
   APP_ENV = "production"
-  APP_URL = "https://nameless-dream-8605.fly.dev"
-  APP_NAME = "Laravel"
-  APP_DEBUG = false
-  DB_CONNECTION = "pgsql"
-  DB_HOST = "db.mjogukzqhegwfyuuihdu.supabase.co"
-  DB_PORT = 5432
-  DB_DATABASE = "postgres"
-  DB_USERNAME = "postgres"
   LOG_CHANNEL = "stderr"
   LOG_LEVEL = "info"
   LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
+  APP_URL = "https://purple-moon-1583.fly.dev"
+  APP_NAME = "Laravel"
+  APP_DEBUG = true
+  DB_CONNECTION = "pgsql"
+  DB_HOST="db.mjogukzqhegwfyuuihdu.supabase.co"
+  DB_PORT = 5432
+  DB_DATABASE = "postgres"
+  DB_USERNAME = "postgres"
+  
 
 [http_service]
   internal_port = 8080
