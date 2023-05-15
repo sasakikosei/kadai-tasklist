@@ -15,10 +15,9 @@ use App\Http\Controllers\TasksController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', [TasksController::class, 'index']);
 
+Route::get('/dashboard', [TasksController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 
 Route::get('/dashboard', function () {
@@ -31,7 +30,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('tasks/create', [TasksController::class, 'create'])->name('tasks.create');
-Route::get('tasks/store', [TasksController::class, 'store'])->name('tasks.store');
-
 require __DIR__.'/auth.php';
+
+Route::group(['middleware' => ['auth']], function(){
+   Route::resource('tasks', TasksController::class, ['only' => ['store', 'destroy','show','create','update','delete','edit']]);
+});
+
+//Route::get('tasks/create', [TasksController::class, 'create'])->name('tasks.create');
+//Route::get('tasks/store', [TasksController::class, 'store'])->name('tasks.store');
+//Route::post('tasks/create', [TasksController::class, 'create']);

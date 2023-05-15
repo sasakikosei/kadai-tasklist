@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Task; 
 
 class TasksController extends Controller
@@ -15,9 +14,17 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $data = [];
+        if(\Auth::check()){
+            $user = \Auth::user();
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+        }
         
-        return view('tasks.index', ['tasks' =>$tasks]);
+        return view('tasks.index', $data);
     }
 
     /**
@@ -43,13 +50,12 @@ class TasksController extends Controller
         $request->validate([
             'content' => 'required',
             'status' => 'required|max:10'
-            
-            ]);
+        ]);
         
-        $task = new Task;
-        $task -> status = $request -> status;
-        $task -> content = $request -> content;
-        $task ->save();
+        $request->user()->tasks()->create([
+            'content' => $request->content,
+            'status' => $request->status
+        ]);
         
         return redirect('/');
     }
@@ -64,7 +70,11 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        return view('tasks.show', ['task' => $task]);
+        
+        return view('tasks.show', [
+            'task' => $task,
+            
+            ]);
     }
 
     /**
@@ -113,9 +123,11 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($id);
         
-        $task->delete();
-        
+        if(\Auth::id() === $task->user_id){
+            $task->delete();
+            return redirect('/')
+                ->with('success','Delete Successful');
+        }
         return redirect('/');
-        
     }
 }
