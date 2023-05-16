@@ -71,14 +71,11 @@ class TasksController extends Controller
      */
     public function show($id)
     {
+        $task = Task::findOrFail($id);
         if(\Auth::id() === $task->user_id) { 
-            $task = Task::findOrFail($id);
+            return view('tasks.show', ['task' => $task,]);
         }
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -87,14 +84,14 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
+        $task = Task::findOrFail($id);
         if(\Auth::id() === $task->user_id){ 
-            $task = Task::findOrFail($id);
+            return view('tasks.edit', ['task'=>$task]);
         }
         else
         {
             return redirect('/');
         }
-        return view('tasks.edit', ['task'=>$task]);
     }
 
     /**
@@ -110,9 +107,9 @@ class TasksController extends Controller
             'content' => 'required',
             'status' => 'required|max:10'
             ]);
-        if(\Auth::id() === $task->user_id) { 
             
-            $task = Task::findOrFail($id);
+        $task = Task::findOrFail($id);
+        if(\Auth::id() === $task->user_id) { 
         
             $task -> status = $request -> status;
             $task -> content = $request -> content;
